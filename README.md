@@ -30,8 +30,10 @@ run
 
 `hello` returns "hello world"
 
-`cpu` returns current cpu usage, read from `/proc/stat` file
+`cpu` returns current cpu usage
 
 `ip` returns current external ip of your server
+
+`memory` returns current memory usage in percent
 
 more to come..

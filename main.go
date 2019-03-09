@@ -33,7 +33,7 @@ func main() {
 	}
 
 	b.Handle("hello", func(m *tb.Message) {
-		b.Send(m.Sender, "hello world")
+		b.Send(m.Sender, "hello world!")
 	})
 	b.Handle("ip", func(m *tb.Message) {
 		myExternalIp := getExternalIp()
@@ -42,6 +42,10 @@ func main() {
 	b.Handle("cpu", func(m *tb.Message) {
 		cpuUsage := getCPUUsage()
 		b.Send(m.Sender, cpuUsage)
+	})
+	b.Handle("memory", func(m *tb.Message) {
+		memoryUsage := getMemoryUsage()
+		b.Send(m.Sender, memoryUsage)
 	})
 
 	// catchall for unknow commands
@@ -107,4 +111,36 @@ func getCPUUsage() string {
 	cpuUsage := 100 * (totalTicks - idleTicks) / totalTicks
 
 	return fmt.Sprintf("CPU usage is %f%% [busy: %f, total: %f]\n", cpuUsage, totalTicks-idleTicks, totalTicks)
+}
+
+func getMemoryUsage() string {
+	meminfoContents, err := ioutil.ReadFile("/proc/meminfo")
+	if err != nil {
+		errMsg := "error reading '/proc/meminfo'"
+		return errMsg
+	}
+	lines := strings.Split(string(meminfoContents), "\n")
+
+	MemTotal := 0
+	MemFree := 0
+
+	for _, line := range lines {
+		if strings.Split(string(line), ":")[0] == "MemTotal" {
+			memtotal, err := strconv.Atoi(strings.TrimSpace(strings.Replace((strings.Split(string(line), ":")[1]), "kB", "", -1)))
+			if err != nil {
+				fmt.Println(err)
+			}
+			MemTotal = memtotal
+		}
+		if strings.Split(string(line), ":")[0] == "MemFree" {
+			memfree, err := strconv.Atoi(strings.TrimSpace(strings.Replace((strings.Split(string(line), ":")[1]), "kB", "", -1)))
+			if err != nil {
+				fmt.Println(err)
+			}
+			MemFree = memfree
+		}
+	}
+	MemUsage := strconv.FormatFloat((float64(MemTotal)-float64(MemFree))/float64(MemTotal), 'f', 6, 64)
+
+	return fmt.Sprintf("%s%% of memory used", MemUsage)
 }
