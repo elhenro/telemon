@@ -1,5 +1,9 @@
 ## telemon
 
+![Example](https://raw.githubusercontent.com/elhenro/telemon/master/example.png)
+
+
+
 ### description
 
 a simple telegram bot that runs on your linux server to provide perfomance stats, general information and notification alerts
