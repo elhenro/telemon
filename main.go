@@ -32,8 +32,11 @@ func main() {
 		return
 	}
 
+	user := &tb.User{}
+
 	b.Handle("hello", func(m *tb.Message) {
-		b.Send(m.Sender, "hello world!")
+		user = m.Sender
+		b.Send(m.Sender, fmt.Sprintf("hello %s! I will send you alerts now.", user.Username))
 	})
 	b.Handle("ip", func(m *tb.Message) {
 		myExternalIp := getExternalIp()
@@ -45,6 +48,9 @@ func main() {
 	})
 	b.Handle("memory", func(m *tb.Message) {
 		memoryUsage := getMemoryUsage()
+		//if m.Sender.Username {
+		fmt.Printf(m.Sender.Username)
+		//}
 		b.Send(m.Sender, memoryUsage)
 	})
 
@@ -53,15 +59,24 @@ func main() {
 		b.Send(m.Sender, "??")
 	})
 
-	b.Start()
-	go startAlerter()
-}
+	ticker := time.NewTicker(5 * time.Second)
+	quit := make(chan struct{})
 
-func startAlerter() {
-	for {
-		time.Sleep(2 * time.Second)
-		go doWebMonitorCheck()
-	}
+	go func() {
+		for {
+			select {
+			case <-ticker.C:
+				b.Send(user, "example alert", &tb.SendOptions{})
+				doWebMonitorCheck()
+			case <-quit:
+				ticker.Stop()
+				return
+			}
+		}
+	}()
+
+	// start telegram bot after ticker
+	b.Start()
 }
 
 func doWebMonitorCheck() {
