@@ -54,6 +54,18 @@ func main() {
 	})
 
 	b.Start()
+	go startAlerter()
+}
+
+func startAlerter() {
+	for {
+		time.Sleep(2 * time.Second)
+		go doWebMonitorCheck()
+	}
+}
+
+func doWebMonitorCheck() {
+	fmt.Println("checking...")
 }
 
 func getExternalIp() string {
