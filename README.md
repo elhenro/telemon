@@ -10,7 +10,7 @@ a simple telegram bot that runs on your linux server to provide perfomance stats
 
 ### setup
 
-`git clone (this)`
+`git clone https://github.com/elhenro/telemon`
 
 `cd telemon`
 
