@@ -1,6 +1,6 @@
 ## telemon
 
-![Example](https://raw.githubusercontent.com/elhenro/telemon/master/example.png)
+![Example](https://raw.githubusercontent.com/elhenro/telemon/master/img.png)
 
 
 
