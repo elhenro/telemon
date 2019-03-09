@@ -14,7 +14,7 @@ get go dependencies
 
 `go get -d ./...`
 
-place your token for the bot (obtain from botfather)
+place your token in the `token.txt` file for the bot (obtain it from botfather)
 
 `echo "1234567890123:examplePasteYourTokenHere12345" >> token.txt`
 
