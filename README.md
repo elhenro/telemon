@@ -28,7 +28,7 @@ run
 
 ### commands
 
-`hello` returns "hello world"
+introduce yourself with `hello`. after that the bot will send you alerts if something is down. 
 
 `cpu` returns current cpu usage
 
