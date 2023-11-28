@@ -1,5 +1,7 @@
 ## telemon
 
+Chat with your server
+
 ![Example](https://raw.githubusercontent.com/elhenro/telemon/master/img.png)
 
 
